@@ -9,6 +9,7 @@ import java.util.Scanner;
  *
  * @author mvail, Daylen Mathews
  */
+
 public class CircuitBoard {
 
     /**
@@ -55,10 +56,108 @@ public class CircuitBoard {
         //TODO: parse the given file to populate the char[][]
         // throw FileNotFoundException if Scanner cannot read the file
         // throw InvalidFileFormatException if any issues are encountered while parsing the file
-        ROWS = 0; //replace with initialization statements using values from file
-        COLS = 0;
+        //replace with initialization statements using values from file
+        
+        String firstLine = fileScan.nextLine();
+		
+        Scanner firstLineScan = new Scanner(firstLine);
 
-        fileScan.close();
+		if (firstLineScan.hasNextInt()) {
+			ROWS = firstLineScan.nextInt();
+		}
+		else {
+			firstLineScan.close();
+			fileScan.close();
+			throw new InvalidFileFormatException(filename + " first value is not an integer.");
+		}
+		if (firstLineScan.hasNextInt()) {
+			COLS = firstLineScan.nextInt();
+		}
+		else {
+			firstLineScan.close();
+			fileScan.close();
+			throw new InvalidFileFormatException(filename + " second value is not an integer.");
+		}
+		board = new char[ROWS][COLS];
+
+		int oneCount = 0;
+		int twoCount = 0;
+
+		for (int i = 0; i < ROWS; i++) { // i rows
+			if (!fileScan.hasNext()) {
+				firstLineScan.close();
+				fileScan.close();
+				throw new InvalidFileFormatException(
+						String.format("%s: row %d does not contain %d rows.", filename, i, ROWS));
+			}
+
+			String line = fileScan.nextLine();
+			Scanner lineScanner = new Scanner(line);
+			for (int k = 0; k < COLS; k++) {
+				if (!lineScanner.hasNext()) {
+					lineScanner.close();
+					fileScan.close();
+					throw new InvalidFileFormatException(
+							String.format("%s: row %d does not contain %d columns.", filename, i, COLS));
+				}
+
+			String columnValue = lineScanner.next();
+				{
+				if (columnValue.length() != 1) {
+					lineScanner.close();
+					fileScan.close();
+					throw new InvalidFileFormatException(String
+								.format("%s: row %d column %d contains more than one character.", filename, i, k));
+					}
+			char colVal = columnValue.charAt(0);
+				if (colVal == START) {
+					if (startingPoint != null) {
+					    fileScan.close();
+						lineScanner.close();
+						throw new InvalidFileFormatException(filename + " contains more than one start point.");
+						}
+						startingPoint = new Point(i, k);
+						oneCount++;
+				} else if (colVal == END) {
+						if (endingPoint != null) {
+							fileScan.close();
+							lineScanner.close();
+							throw new InvalidFileFormatException(filename + " contains more than one end point.");
+						}
+						endingPoint = new Point(i, k);
+						twoCount++;
+					}
+				if (ALLOWED_CHARS.indexOf(colVal) == -1) {
+						fileScan.close();
+						lineScanner.close();
+						throw new InvalidFileFormatException(filename + " contains invalid characters.");
+
+					} else {
+						board[i][k] = colVal;
+					}
+				}
+			}
+		if (lineScanner.hasNext()) {
+				lineScanner.close();
+				fileScan.close();
+				throw new InvalidFileFormatException(filename + " contains more than " + COLS + " columns.");
+			}
+			lineScanner.close(); // close scanner
+		}
+		if (oneCount == 0 || twoCount == 0) {
+			firstLineScan.close();
+			fileScan.close();
+			throw new InvalidFileFormatException(filename + " does not contain a start or end point.");
+		}
+		if (fileScan.hasNext()) {
+			firstLineScan.close();
+			fileScan.close();
+			throw new InvalidFileFormatException(filename + " contains more than " + ROWS + " rows.");
+		}
+		firstLineScan.close();
+		fileScan.close();
+	}
+
     }
 
     /**
@@ -170,5 +269,4 @@ public class CircuitBoard {
         }
         return str.toString();
     }
-
-}// class CircuitBoard
+// class CircuitBoard
