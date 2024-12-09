@@ -27,10 +27,11 @@ public class CircuitTracer {
      * Print instructions for running CircuitTracer from the command line.
      */
     private void printUsage() {
-        System.out.println(
-                "Usage: java CircuitTracer -s|-q -c|-g filename\n"
-                + " -s for stack or -q for queue\n"
-                + " -c for console or -g for GUI");
+        System.out.println("Usage: java CircuitTracer stroageChoice displayChoice inputFile \n"
+                + "\twhere storageChoice is either -s for a stack or -q for a queue, \n"
+                + "\tdisplayChoice is either -c for console-only output or -g for GUI output,\n"
+                + "\tand inputFile is the name of a file containing a layout to complete.");
+
     }
 
     /**
