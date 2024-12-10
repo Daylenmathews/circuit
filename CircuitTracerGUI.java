@@ -76,7 +76,7 @@ public class CircuitTracerGUI extends JFrame {
 
         JPanel panel = new JPanel(new GridLayout(rows, cols));
         panel.setPreferredSize(new Dimension(BOARD_WIDTH, BOARD_HEIGHT));
-        JLabel[][] boardSpots = new JLabel[rows][cols];
+        boardSpots = new JLabel[rows][cols];
 
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < cols; x++) {
