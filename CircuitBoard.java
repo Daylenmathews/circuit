@@ -27,11 +27,11 @@ public class CircuitBoard {
     //constants you may find useful
     private final int ROWS; //initialized in constructor
     private final int COLS; //initialized in constructor
-    private final char OPEN = 'O';	//capital 'o', an open position
-    private final char CLOSED = 'X';//a blocked position
-    private final char TRACE = 'T';	//part of the trace connecting 1 to 2
-    private final char START = '1';	//the starting component
-    private final char END = '2';	//the ending component
+    private static final char OPEN = 'O';	//capital 'o', an open position
+    private static final char CLOSED = 'X';//a blocked position
+    private static final char TRACE = 'T';	//part of the trace connecting 1 to 2
+    private static final char START = '1';	//the starting component
+    private static final char END = '2';	//the ending component
     private final String ALLOWED_CHARS = "OXT12"; //useful for validating with indexOf
 
     /**
@@ -59,20 +59,14 @@ public class CircuitBoard {
         String firstLine = fileScan.nextLine();
         Scanner firstLineScan = new Scanner(firstLine);
 
-        if (firstLineScan.hasNextInt()) {
-            ROWS = firstLineScan.nextInt();
-        } else {
-            firstLineScan.close();
-            fileScan.close();
+        if (!firstLineScan.hasNextInt()) {
             throw new InvalidFileFormatException(filename + " first value is not an integer.");
         }
-        if (firstLineScan.hasNextInt()) {
-            COLS = firstLineScan.nextInt();
-        } else {
-            firstLineScan.close();
-            fileScan.close();
+        ROWS = firstLineScan.nextInt();
+        if (!firstLineScan.hasNextInt()) {
             throw new InvalidFileFormatException(filename + " second value is not an integer.");
         }
+        COLS = firstLineScan.nextInt();
         board = new char[ROWS][COLS];
 
         int oneCount = 0;
@@ -247,6 +241,20 @@ public class CircuitBoard {
      */
     public int numCols() {
         return COLS;
+    }
+
+    /**
+     * Get the start point as row, col coordinates.
+     */
+    public boolean isStart(int row, int col) {
+        return startingPoint.x == row && startingPoint.y == col;
+    }
+
+    /**
+     * Get the end point as row, col coordinates.
+     */
+    public boolean isEnd(int row, int col) {
+        return endingPoint.x == row && endingPoint.y == col;
     }
 
     /* (non-Javadoc)

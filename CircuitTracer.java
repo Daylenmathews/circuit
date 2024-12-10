@@ -22,15 +22,16 @@ public class CircuitTracer {
     public static void main(String[] args) {
         new CircuitTracer(args); //create this with args
     }
+    private ArrayList<CircuitBoard> solvedBoards;
 
     /**
      * Print instructions for running CircuitTracer from the command line.
      */
     private void printUsage() {
-        System.out.println("Usage: java CircuitTracer stroageChoice displayChoice inputFile \n"
-                + "\twhere storageChoice is either -s for a stack or -q for a queue, \n"
-                + "\tdisplayChoice is either -c for console-only output or -g for GUI output,\n"
-                + "\tand inputFile is the name of a file containing a layout to complete.");
+        System.out.println("Usage: java CircuitTracer stroageChoice displayChoice inputFile \n");
+        System.out.println("\twhere storageChoice is either -s for a stack or -q for a queue, \n");
+        System.out.println("\tdisplayChoice is either -c for console-only output or -g for GUI output,\n");
+        System.out.println("\tand inputFile is the name of a file containing a layout to complete.");
 
     }
 
@@ -53,10 +54,12 @@ public class CircuitTracer {
         //TODO: output results to console or GUI, according to specified choice
 
         if (!args[1].equals("-c") && !args[1].equals("-g")) {
+            System.out.println("Error: Invalid display choice. Use -c for console or -g for GUI.");
             printUsage();
             return;
         }
         if (!args[0].equals("-s") && !args[0].equals("-q")) {
+            System.out.println("Error: Invalid storage choice. Use -s for stack or -q for queue.");
             printUsage();
             return;
         }
@@ -79,9 +82,17 @@ public class CircuitTracer {
         } catch (FileNotFoundException e) {
             System.out.println(e + " File is not in the correct format.");
             return;
+        } catch (Exception e) {
+            System.out.println("Error: Unable to read the input file. Ensure it follows the correct format.");
+            return; // Exit 
         }
 
-        ArrayList<TraceState> bestPaths = new ArrayList<TraceState>();
+        if (args == null || args.length != 3) {
+            printUsage();
+            return;
+        }
+
+        ArrayList<TraceState> bestPaths = new ArrayList<>();
 
         int x = board.getStartingPoint().x;
         int y = board.getStartingPoint().y;
@@ -127,19 +138,27 @@ public class CircuitTracer {
             }
         }
 
-        switch (args[1]) {
+        switch (args[1].toLowerCase()) {
             case "-c":
-                for (TraceState path : bestPaths) {
-                    System.out.println(path.getBoard().toString());
+                switch (args[1].toLowerCase()) {
+                    case "-c":
+                        for (TraceState path : bestPaths) {
+                            System.out.println(path.getBoard().toString());
+                        }
+                        break;
+                    case "-g":
+                        ArrayList<CircuitBoard> solvedBoards = new ArrayList<>();
+                        for (TraceState path : bestPaths) {
+                            CircuitBoard solvedBoard = path.getBoard(); //get solved board from TraceState
+                            solvedBoards.add(solvedBoard); //add it to the solvedBoards list
+                        }
+                        new CircuitTracerGUI(board, solvedBoards); //pass unsolved board and solved boards to GUI
+                        break;
+                    default:
+                        printUsage();
+                        return;
                 }
-                break;
-            case "-g":
-                System.out.println("GUI mode is not supported in this version.");
-                break;
-            default:
-                printUsage();
-                return;
         }
     }
 }
-	 // class CircuitTracer
+// class CircuitTracer
