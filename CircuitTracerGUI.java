@@ -135,17 +135,17 @@ public class CircuitTracerGUI extends JFrame {
     private Color getBackgroundColor(char charAt) {
         switch (charAt) {
             case '1':
-                return START_COLOR;  // Color for start
+                return START_COLOR;  //Color for start
             case '2':
-                return END_COLOR;    // Color for end
+                return END_COLOR;    //Color for end
             case 'T':
-                return TRACE_COLOR;  // Color for trace
+                return TRACE_COLOR;  //Color for trace
             case 'O':
-                return Color.WHITE;  // Open space
+                return Color.WHITE;  //Open space
             case 'X':
-                return Color.GRAY;   // Blocked space
+                return Color.GRAY;   //Blocked space
             default:
-                return Color.LIGHT_GRAY; // Default color
+                return Color.LIGHT_GRAY; //Default color
         }
     }
 
