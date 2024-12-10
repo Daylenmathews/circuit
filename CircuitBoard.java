@@ -2,6 +2,7 @@
 import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -145,6 +146,12 @@ public class CircuitBoard {
         }
         firstLineScan.close();
         fileScan.close();
+    }
+
+    public void tracePath(CircuitBoard board, List<Point> path) {
+        for (Point p : path) {
+            board.makeTrace(p.x, p.y);  // marks the trace as 'T' in the CircuitBoard
+        }
     }
 
     /**

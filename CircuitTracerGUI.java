@@ -155,7 +155,7 @@ public class CircuitTracerGUI extends JFrame {
         }
 
         viewingSolution = index;
-        CircuitBoard board = solvedBoards.get(index);
+        CircuitBoard board = solvedBoards.get(index); //gets solved board
         for (int y = 0; y < board.numRows(); y++) {
             for (int x = 0; x < board.numCols(); x++) {
                 char cell = board.charAt(y, x);
