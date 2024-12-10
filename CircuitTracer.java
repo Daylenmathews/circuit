@@ -43,15 +43,15 @@ public class CircuitTracer {
      */
     public CircuitTracer(String[] args) {
         //TODO: parse and validate command line args - first validation provided
+        //TODO: initialize the Storage to use either a stack or queue
+        //TODO: read in the CircuitBoard from the given file
+        //TODO: run the search for best paths
+        //TODO: output results to console or GUI, according to specified choice
         CircuitBoard board = null;
         if (args.length != 3) {
             printUsage();
             return; //exit the constructor immediately
         }
-        //TODO: initialize the Storage to use either a stack or queue
-        //TODO: read in the CircuitBoard from the given file
-        //TODO: run the search for best paths
-        //TODO: output results to console or GUI, according to specified choice
 
         if (!args[1].equals("-c") && !args[1].equals("-g")) {
             System.out.println("Error: Invalid display choice. Use -c for console or -g for GUI.");
@@ -137,27 +137,23 @@ public class CircuitTracer {
                 }
             }
         }
-
         switch (args[1].toLowerCase()) {
             case "-c":
-                switch (args[1].toLowerCase()) {
-                    case "-c":
-                        for (TraceState path : bestPaths) {
-                            System.out.println(path.getBoard().toString());
-                        }
-                        break;
-                    case "-g":
-                        ArrayList<CircuitBoard> solvedBoards = new ArrayList<>();
-                        for (TraceState path : bestPaths) {
-                            CircuitBoard solvedBoard = path.getBoard(); //get solved board from TraceState
-                            solvedBoards.add(solvedBoard); //add it to the solvedBoards list
-                        }
-                        new CircuitTracerGUI(board, solvedBoards); //pass unsolved board and solved boards to GUI
-                        break;
-                    default:
-                        printUsage();
-                        return;
+                for (TraceState path : bestPaths) {
+                    System.out.println(path.getBoard().toString());
                 }
+                break;
+            case "-g":
+                ArrayList<CircuitBoard> solvedBoards = new ArrayList<>();
+                for (TraceState path : bestPaths) {
+                    CircuitBoard solvedBoard = path.getBoard(); //get solved board from TraceState
+                    solvedBoards.add(solvedBoard); //add it to the solvedBoards list
+                }
+                new CircuitTracerGUI(board, solvedBoards); //pass unsolved board and solved boards to GUI
+                break;
+            default:
+                printUsage();
+                return;
         }
     }
 }
